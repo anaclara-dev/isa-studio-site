@@ -1,6 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
 
-  
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Joias</title>
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
 <nav>
+
   <h1>Belle Piercer</h1>
 
   <ul>
@@ -9,15 +28,17 @@
     <li><a href="joias.html">Joias</a></li>
     <li><a href="agendamento.html">Agendamento</a></li>
   </ul>
+
 </nav>
 
-<link rel="stylesheet" href="style.css">
-
 <section id="joias">
-<h2>Joias</h2>
-<div class="catalogo" id="catalogo"></div>
+
+  <h2>Joias</h2>
+
+  <div class="catalogo" id="catalogo"></div>
 
 </section>
+
 <script>
 
 function escolherJoia(nomeJoia, valorJoia){
@@ -26,24 +47,26 @@ function escolherJoia(nomeJoia, valorJoia){
     JSON.parse(localStorage.getItem("perfuracao"));
 
   if(!perfuracao){
+
     alert("Escolha uma perfuração primeiro");
-    window.location.href = "perfuracoes.html";
+
+    window.location.href =
+      "perfuracoes.html";
+
     return;
   }
 
   const total =
     perfuracao.valor + valorJoia;
 
-  const texto = `
-Olá! 🖤
+  const texto = `Olá! 🖤
 
 Gostaria de realizar:
 
 • Perfuração: ${perfuracao.nome}
 • Joia: ${nomeJoia}
 
-Valor total: R$ ${total},00
-`;
+Valor total: R$ ${total},00`;
 
   const url =
 `https://wa.me/5561994240391?text=${encodeURIComponent(texto)}`;
@@ -87,7 +110,6 @@ async function carregarJoias(){
         </button>
 
       </div>
-
       `;
     }
 
@@ -97,5 +119,7 @@ async function carregarJoias(){
 
 carregarJoias();
 
-
 </script>
+
+</body>
+</html>
