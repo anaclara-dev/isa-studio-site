@@ -1,0 +1,40 @@
+<nav>
+  <h1>Belle Piercer</h1>
+
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="perfuracoes.html">Perfurações</a></li>
+    <li><a href="joias.html">Joias</a></li>
+    <li><a href="agendamento.html">Agendamento</a></li>
+  </ul>
+</nav>
+<center><link rel="stylesheet" href="style.css">
+    <body class="fundo-agendamento"></body>
+    <p class="frase">Agende seu horário aqui</p>
+<section id="agendamento" class="agendamento">
+    <div class="caixa-agendamento">
+
+
+
+
+
+  <input id="nome" placeholder="Seu nome">
+  <input id="wpp" placeholder="WhatsApp">
+  <textarea id="msg" placeholder="O que deseja perfurar ou comprar?"></textarea>
+
+  <button onclick="enviarWpp()">📲 Solicitar agendamento</button>
+</section>
+
+<script>
+function enviarWpp() {
+  const nome = document.getElementById("nome").value;
+  const wpp = document.getElementById("wpp").value;
+  const msg = document.getElementById("msg").value;
+
+  const texto = `Olá! Me chamo ${nome}. Meu WhatsApp é ${wpp}. Gostaria de agendar: ${msg}`;
+  const url = `https://wa.me/5561994240391?text=${encodeURIComponent(texto)}`;
+
+  window.open(url, "_blank");
+}
+</script>
+</center>

@@ -1,0 +1,56 @@
+
+<nav>
+  <h1>Belle Piercer</h1>
+
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="perfuracoes.html">Perfurações</a></li>
+    <li><a href="joias.html">Joias</a></li>
+    <li><a href="agendamento.html">Agendamento</a></li>
+  </ul>
+</nav>
+
+<section id="perfuracoes">
+...
+<link rel="stylesheet" href="style.css">
+
+<section id="perfuracoes">
+<h2>Perfurações</h2>
+<div class="catalogo">
+  <div class="item"><img src="C:\Users\anacl\OneDrive\Desktop\isa studio\html\imagens\helix.HEIC"><h3>Helix</h3><div class="preco">R$ 60,00</div><button onclick="escolherPerfuracao('Helix', 60)">
+  Escolher Joia
+</button></div>
+  <div class="item"><img src="studio.jpg/images (1).jpg"><h3>Tragus</h3><button onclick="escolherPerfuracao('Helix', 60)">
+  Escolher Joia</div>
+  <div class="item"><img src="studio.jpg/septo.png"><h3>Septum</h3><div class="preco">R$ 90,00</div><button onclick="escolherPerfuracao('Helix', 60)">
+  Escolher Joia</div>
+  <div class="item"><img src="studio.jpg/nostril.png"><h3>Nostril</h3><div class="preco">R$ 60,00</div><button onclick="escolherPerfuracao('Helix', 60)">
+  Escolher Joia</div>
+  <div class="item"><img src="studio.jpg/daith.png"><h3>Daith</h3><div class="preco">R$ 80,00</div><button onclick="escolherPerfuracao('Helix', 60)">
+  Escolher Joia</div>
+  <div class="item"><img src="studio.jpg/industrial.png"><h3>Industrial</h3><div class="preco">R$ 120,00</div><button onclick="escolherPerfuracao('Helix', 60)">
+  Escolher Joia</div>
+  <div class="item"><img src="studio.jpg/umbigo.png"><h3>Umbigo</h3><div class="preco">R$ 100,00</div><button onclick="escolherPerfuracao('Helix', 60)">
+  Escolher Joia</div>
+  <div class="item"><img src="studio.jpg/labio.png"><h3>Lábio</h3><div class="preco">R$ 80,00</div><button onclick="escolherPerfuracao('Helix', 60)">
+  Escolher Joia</div>
+</div>
+</section>
+<script>
+
+function escolherPerfuracao(nome, valor){
+
+  const perfuracao = {
+    nome: nome,
+    valor: valor
+  };
+
+  localStorage.setItem(
+    "perfuracao",
+    JSON.stringify(perfuracao)
+  );
+
+  window.location.href = "joias.html";
+}
+
+</script>

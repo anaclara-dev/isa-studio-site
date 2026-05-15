@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Belle Piercing Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+  <h1>Belle Piercer</h1>
+
+  <ul>
+    <li><a href="perfuracoes.html">Perfurações</a></li>
+    <li><a href="joias.html">Joias</a></li>
+    <li><a href="agendamento.html">Agendamento</a></li>
+  </ul>
+</nav>
+
+<header>
+</header>
+
+<section class="sobre">
+  <h2>Sobre mim</h2>
+
+  <p>
+    Tenho 24 anos e sou profissional body piercing há quatro anos. Minha trajetória no body piercing é marcada por dedicação, responsabilidade e respeito ao corpo de cada cliente, entendendo a perfuração como um processo que envolve técnica, cuidado e confiança.
+
+Em 2025, vivi uma das maiores transformações da minha vida ao me tornar mãe. A maternidade fortaleceu ainda mais meu olhar sensível, minha responsabilidade profissional e meu compromisso com o bem-estar, a segurança e o acolhimento de quem passa pelas minhas mãos.
+
+Hoje, uno técnica, experiência e um atendimento humanizado, oferecendo perfurações feitas com precisão, higiene rigorosa e atenção individual. Meu trabalho vai além da estética: é sobre expressão, identidade e autonomia corporal.
+  </p>
+  </p>
+</section>
+
+<section class="Titanio">
+  <h2>Titânio</h2>
+
+  <p>
+    é um metal de transição prateado, conhecido por sua excepcional resistência à corrosão, alta relação resistência/peso (45% mais leve que o aço com força similar) e biocompatibilidade.
+  </p>
+</section>
+
+<a class="whats" href="https://wa.me/5561994240391" target="_blank">
+📲
+</a>
+
+<div class="carrinho" onclick="finalizar()">
+  🛒 <span id="contador">0</span>
+</div>
+
+<div id="toast">Adicionado</div>
+
+<script>
+let carrinho = [];
+let total = 0;
+
+function add(item) {
+  carrinho.push(item);
+  total++;
+
+  document.getElementById("contador").innerText = total;
+  mostrarToast(item);
+}
+
+function finalizar() {
+  if (carrinho.length === 0) {
+    mostrarToast("Carrinho vazio 🖤");
+    return;
+  }
+
+  let texto = "Olá! Gostaria de:\n\n";
+
+  carrinho.forEach(i => texto += "• " + i + "\n");
+
+  window.open(
+    "https://wa.me/5561994240391?text=" + encodeURIComponent(texto),
+    "_blank"
+  );
+}
+
+function mostrarToast(texto) {
+  const toast = document.getElementById("toast");
+
+  toast.innerText = texto;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1500);
+}
+</script>
+
+</body>
+</html>
