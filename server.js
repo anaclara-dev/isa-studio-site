@@ -42,30 +42,67 @@ app.get("/catalogo", (req, res) => {
 });
 
 // CADASTRAR
-app.post("/catalogo", upload.single("imagem"), (req, res) => {
+// CADASTRAR
 
-  const { nome, preco, categoria } = req.body;
+app.post(
 
-  const imagem = req.file.filename;
+  "/catalogo",
 
-  const  categoria =
-req.body.categoria.toLowerCase();
+  upload.single("imagem"),
 
-  db.query(
-    "INSERT INTO catalogo(nome, preco, imagem, categoria) VALUES (?, ?, ?, ?)",
+  (req, res) => {
 
-    [nome, preco, categoria, imagem],
+    const nome =
+      req.body.nome;
 
-    (erro) => {
+    const preco =
+      req.body.preco;
 
-      if(erro){
-        return res.status(500).json(erro);
+    const categoria =
+      req.body.categoria.toLowerCase();
+
+    const imagem =
+      req.file.filename;
+
+    db.query(
+
+      `
+      INSERT INTO catalogo
+      (nome, preco, imagem, categoria)
+
+      VALUES (?, ?, ?, ?)
+      `,
+
+      [
+        nome,
+        preco,
+        imagem,
+        categoria
+      ],
+
+      (erro) => {
+
+        if(erro){
+
+          return res
+            .status(500)
+            .json(erro);
+        }
+
+        res.json({
+
+          mensagem:
+          "Produto cadastrado"
+
+        });
+
       }
 
-      res.json({ mensagem: "Produto cadastrado" });
-    }
-  );
-});
+    );
+
+  }
+
+);
 // EDITAR
 app.put("/catalogo/:id", (req, res) => {
 
