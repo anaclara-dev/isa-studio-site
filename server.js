@@ -1,55 +1,96 @@
 const express = require("express");
+
 const cors = require("cors");
+
 const multer = require("multer");
+
 const path = require("path");
 
-const db = require("./db");
+const { Pool } = require("pg");
 
 const app = express();
 
+/* =========================
+   SUPABASE
+========================= */
+
+const db = new Pool({
+
+  connectionString:
+  "postgresql://postgres.ayverxhlvhwoqpvrntqz:StudioIsa1901!@aws-1-us-east-1.pooler.supabase.com:6543/postgres",
+
+  ssl: {
+    rejectUnauthorized: false
+  }
+
+});
+
+/* =========================
+   CONFIG
+========================= */
+
 app.use(cors());
+
 app.use(express.json());
 
-app.use("/uploads", express.static("uploads"));
+app.use(
+  "/uploads",
+  express.static("uploads")
+);
+
+/* =========================
+   MULTER
+========================= */
 
 const storage = multer.diskStorage({
 
   destination: (req, file, cb) => {
+
     cb(null, "uploads/");
   },
 
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+
+    cb(
+      null,
+      Date.now() +
+      path.extname(file.originalname)
+    );
   }
-});
-
-const upload = multer({ storage });
-
-// LISTAR
-app.get("/catalogo", (req, res) => {
-
-  res.json([
-
-    {
-      nome: "Argola Titânio",
-      preco: 45,
-      categoria: "joia",
-      imagem: "industrial.png"
-    },
-
-    {
-      nome: "Clicker",
-      preco: 60,
-      categoria: "joia",
-      imagem: "nostril.png"
-    }
-
-  ]);
 
 });
 
-// CADASTRAR
-// CADASTRAR
+const upload = multer({
+  storage
+});
+
+/* =========================
+   LISTAR
+========================= */
+
+app.get("/catalogo", async (req, res) => {
+
+  try {
+
+    const resultado =
+      await db.query(
+        "SELECT * FROM catalogo"
+      );
+
+    res.json(resultado.rows);
+
+  } catch (erro) {
+
+    console.log(erro);
+
+    res.status(500).json(erro);
+  }
+
+});
+
+/* =========================
+   CADASTRAR
+========================= */
 
 app.post(
 
@@ -57,97 +98,168 @@ app.post(
 
   upload.single("imagem"),
 
-  (req, res) => {
+  async (req, res) => {
 
-    const nome =
-      req.body.nome;
+    try {
 
-    const preco =
-      req.body.preco;
+      const nome =
+        req.body.nome;
 
-    const categoria =
-      req.body.categoria.toLowerCase();
+      const preco =
+        req.body.preco;
 
-    const imagem =
-      req.file.filename;
+      const categoria =
+        req.body.categoria.toLowerCase();
 
-    db.query(
+      const imagem =
+        req.file.filename;
 
-      `
-      INSERT INTO catalogo
-      (nome, preco, imagem, categoria)
+      await db.query(
 
-      VALUES (?, ?, ?, ?)
-      `,
+        `
+        INSERT INTO catalogo
+        (nome, preco, imagem, categoria)
 
-      [
-        nome,
-        preco,
-        imagem,
-        categoria
-      ],
+        VALUES ($1, $2, $3, $4)
+        `,
 
-      (erro) => {
+        [
+          nome,
+          preco,
+          imagem,
+          categoria
+        ]
 
-        if(erro){
+      );
 
-          return res
-            .status(500)
-            .json(erro);
-        }
+      res.json({
 
-        res.json({
+        mensagem:
+        "Produto cadastrado"
 
-          mensagem:
-          "Produto cadastrado"
+      });
 
-        });
+    } catch (erro) {
 
-      }
+      console.log(erro);
 
-    );
+      res.status(500).json(erro);
+    }
 
   }
 
 );
-// EDITAR
-app.put("/catalogo/:id", (req, res) => {
 
-  const { nome, preco } = req.body;
+/* =========================
+   EDITAR
+========================= */
 
-  db.query(
-    "UPDATE catalogo SET nome=?, preco=? WHERE id=?",
+app.put(
 
-    [nome, preco, req.params.id],
+  "/catalogo/:id",
 
-    (erro) => {
+  async (req, res) => {
 
-      if(erro){
-        return res.status(500).json(erro);
-      }
+    try {
 
-      res.json({ mensagem: "Atualizado" });
+      const {
+        nome,
+        preco
+      } = req.body;
+
+      await db.query(
+
+        `
+        UPDATE catalogo
+
+        SET nome=$1,
+        preco=$2
+
+        WHERE id=$3
+        `,
+
+        [
+          nome,
+          preco,
+          req.params.id
+        ]
+
+      );
+
+      res.json({
+
+        mensagem:
+        "Atualizado"
+
+      });
+
+    } catch (erro) {
+
+      console.log(erro);
+
+      res.status(500).json(erro);
     }
-  );
-});
-// DELETAR
-app.delete("/catalogo/:id", (req, res) => {
 
-  db.query(
-    "DELETE FROM catalogo WHERE id=?",
+  }
 
-    [req.params.id],
+);
 
-    (erro) => {
+/* =========================
+   DELETAR
+========================= */
 
-      if(erro){
-        return res.status(500).json(erro);
-      }
+app.delete(
 
-      res.json({ mensagem: "Deletado" });
+  "/catalogo/:id",
+
+  async (req, res) => {
+
+    try {
+
+      await db.query(
+
+        `
+        DELETE FROM catalogo
+
+        WHERE id=$1
+        `,
+
+        [req.params.id]
+
+      );
+
+      res.json({
+
+        mensagem:
+        "Deletado"
+
+      });
+
+    } catch (erro) {
+
+      console.log(erro);
+
+      res.status(500).json(erro);
     }
+
+  }
+
+);
+
+/* =========================
+   SERVER
+========================= */
+
+const PORT =
+process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+
+  console.log(
+
+    "Servidor rodando na porta " +
+    PORT
+
   );
-});
-app.listen(3000, () => {
-  console.log("Servidor rodando");
+
 });
