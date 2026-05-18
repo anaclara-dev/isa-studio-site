@@ -28,17 +28,24 @@ const upload = multer({ storage });
 // LISTAR
 app.get("/catalogo", (req, res) => {
 
-  db.query(
-    "SELECT * FROM catalogo",
-    (erro, resultado) => {
+  res.json([
 
-      if(erro){
-        return res.status(500).json(erro);
-      }
+    {
+      nome: "Argola Titânio",
+      preco: 45,
+      categoria: "joia",
+      imagem: "industrial.png"
+    },
 
-      res.json(resultado);
+    {
+      nome: "Clicker",
+      preco: 60,
+      categoria: "joia",
+      imagem: "nostril.png"
     }
-  );
+
+  ]);
+
 });
 
 // CADASTRAR
