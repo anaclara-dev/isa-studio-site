@@ -182,7 +182,7 @@ function mostrarToast(texto){
 async function carregarJoias(){
 
   const resposta =
-    await fetch("http://localhost:3000/catalogo");
+    await fetch("https://isa-studio-backend.onrender.com/catalogo");
 
   const produtos =
     await resposta.json();
@@ -201,8 +201,8 @@ async function carregarJoias(){
       <div class="item">
 
         <img
-          src="http://localhost:3000/uploads/${produto.imagem}"
-        >
+src="https://isa-studio-backend.onrender.com/uploads/${produto.imagem}"
+>
 
         <h3>${produto.nome}</h3>
 
