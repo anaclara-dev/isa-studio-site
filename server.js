@@ -48,10 +48,13 @@ app.post("/catalogo", upload.single("imagem"), (req, res) => {
 
   const imagem = req.file.filename;
 
+  const  categoria =
+req.body.categoria.toLowerCase();
+
   db.query(
     "INSERT INTO catalogo(nome, preco, imagem, categoria) VALUES (?, ?, ?, ?)",
 
-    [nome, preco, imagem, categoria],
+    [nome, preco, categoria, imagem],
 
     (erro) => {
 

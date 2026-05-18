@@ -1,6 +1,83 @@
 const formulario =
 document.getElementById("formulario");
 
+/* =========================
+   CARREGAR JOIAS
+========================= */
+
+async function carregarJoias(){
+
+  const resposta =
+    await fetch("http://localhost:3000/catalogo");
+
+  const produtos =
+    await resposta.json();
+
+  const lista =
+    document.getElementById("listaJoias");
+
+  lista.innerHTML = "";
+
+  produtos.forEach((produto) => {
+
+    if(produto.categoria === "joia"){
+
+      lista.innerHTML += `
+
+      <div class="item">
+
+        <img
+          src="http://localhost:3000/uploads/${produto.imagem}"
+          width="150"
+        >
+
+        <h3>${produto.nome}</h3>
+
+        <p>R$ ${produto.preco}</p>
+
+        <button onclick="excluirJoia(${produto.id})">
+          Excluir
+        </button>
+
+      </div>
+
+      `;
+    }
+
+  });
+
+}
+
+/* =========================
+   EXCLUIR JOIA
+========================= */
+
+async function excluirJoia(id){
+
+  const confirmar =
+    confirm("Deseja excluir esta joia?");
+
+  if(!confirmar){
+    return;
+  }
+
+  await fetch(
+
+    `http://localhost:3000/catalogo/${id}`,
+
+    {
+      method: "DELETE"
+    }
+
+  );
+
+  carregarJoias();
+}
+
+/* =========================
+   SALVAR JOIA
+========================= */
+
 formulario.addEventListener(
 
   "submit",
@@ -9,7 +86,8 @@ formulario.addEventListener(
 
     e.preventDefault();
 
-    const dados = new FormData();
+    const dados =
+      new FormData();
 
     dados.append(
       "nome",
@@ -32,14 +110,26 @@ formulario.addEventListener(
     );
 
     await fetch(
+
       "http://localhost:3000/catalogo",
 
       {
         method: "POST",
         body: dados
       }
+
     );
 
     alert("Produto cadastrado");
+
+    carregarJoias();
+
   }
+
 );
+
+/* =========================
+   INICIAR
+========================= */
+
+carregarJoias();

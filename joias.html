@@ -18,6 +18,8 @@
 
 <body>
 
+<!-- MENU -->
+
 <nav>
 
   <h1>Belle Piercer</h1>
@@ -31,20 +33,58 @@
 
 </nav>
 
+<!-- JOIAS -->
+
 <section id="joias">
 
   <h2>Joias</h2>
+
+  <!-- PERFURAÇÃO ESCOLHIDA -->
+
+  <div id="perfuracaoEscolhida"></div>
+
+  <!-- CATÁLOGO -->
 
   <div class="catalogo" id="catalogo"></div>
 
 </section>
 
+<!-- CARRINHO -->
+
+<div class="carrinho" onclick="finalizar()">
+  🛒 <span id="contador">0</span>
+</div>
+
+<div id="toast">Adicionado</div>
+
 <script>
 
-function escolherJoia(nomeJoia, valorJoia){
+/* =========================
+   PERFURAÇÃO ESCOLHIDA
+========================= */
 
-  const perfuracao =
-    JSON.parse(localStorage.getItem("perfuracao"));
+const perfuracao =
+JSON.parse(localStorage.getItem("perfuracao"));
+
+
+
+
+
+/* =========================
+   CARRINHO
+========================= */
+
+let carrinho =
+JSON.parse(localStorage.getItem("carrinho")) || [];
+
+document.getElementById("contador").innerText =
+carrinho.length;
+
+/* =========================
+   ADICIONAR JOIA
+========================= */
+
+function escolherJoia(nomeJoia, valorJoia){
 
   if(!perfuracao){
 
@@ -59,20 +99,85 @@ function escolherJoia(nomeJoia, valorJoia){
   const total =
     perfuracao.valor + valorJoia;
 
-  const texto = `Olá! 🖤
+  const item = `
 
-Gostaria de realizar:
+Perfuração:
+${perfuracao.nome}
 
-• Perfuração: ${perfuracao.nome}
-• Joia: ${nomeJoia}
+Joia:
+${nomeJoia}
 
-Valor total: R$ ${total},00`;
+Valor Total:
+R$ ${total},00
 
-  const url =
-`https://wa.me/5561994240391?text=${encodeURIComponent(texto)}`;
+`;
 
-  window.open(url, "_blank");
+  carrinho.push(item);
+
+  localStorage.setItem(
+    "carrinho",
+    JSON.stringify(carrinho)
+  );
+
+  document.getElementById("contador").innerText =
+    carrinho.length;
+
+  mostrarToast("Joia adicionada 🖤");
 }
+
+/* =========================
+   FINALIZAR
+========================= */
+
+function finalizar(){
+
+  if(carrinho.length === 0){
+
+    mostrarToast("Carrinho vazio 🖤");
+
+    return;
+  }
+
+  let texto =
+    "Olá! Gostaria de:\n\n";
+
+  carrinho.forEach((item) => {
+
+    texto += item + "\n";
+  });
+
+  window.open(
+
+    "https://wa.me/5561994240391?text=" +
+    encodeURIComponent(texto),
+
+    "_blank"
+  );
+}
+
+/* =========================
+   TOAST
+========================= */
+
+function mostrarToast(texto){
+
+  const toast =
+    document.getElementById("toast");
+
+  toast.innerText = texto;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+
+    toast.classList.remove("show");
+
+  }, 1500);
+}
+
+/* =========================
+   CARREGAR JOIAS
+========================= */
 
 async function carregarJoias(){
 
@@ -106,10 +211,13 @@ async function carregarJoias(){
         </div>
 
         <button onclick="escolherJoia('${produto.nome}', ${produto.preco})">
-          Escolher joia
+
+          Adicionar ao carrinho
+
         </button>
 
       </div>
+
       `;
     }
 

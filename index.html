@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
 <title>Belle Piercing Studio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,13 +14,15 @@
   <h1>Belle Piercer</h1>
 
   <ul>
+    <li><a href="index.html">Home</a></li>
     <li><a href="perfuracoes.html">Perfurações</a></li>
     <li><a href="joias.html">Joias</a></li>
     <li><a href="agendamento.html">Agendamento</a></li>
   </ul>
 </nav>
 
-<header>
+<header
+  class="capa">
 </header>
 
 <section class="sobre">
@@ -39,7 +42,7 @@ Hoje, uno técnica, experiência e um atendimento humanizado, oferecendo perfura
   <h2>Titânio</h2>
 
   <p>
-    é um metal de transição prateado, conhecido por sua excepcional resistência à corrosão, alta relação resistência/peso (45% mais leve que o aço com força similar) e biocompatibilidade.
+    O Titânio é um metal de transição prateado, conhecido por sua excepcional resistência à corrosão, alta relação resistência/peso (45% mais leve que o aço com força similar) e biocompatibilidade.
   </p>
 </section>
 
@@ -47,50 +50,7 @@ Hoje, uno técnica, experiência e um atendimento humanizado, oferecendo perfura
 📲
 </a>
 
-<div class="carrinho" onclick="finalizar()">
-  🛒 <span id="contador">0</span>
-</div>
 
-<div id="toast">Adicionado</div>
-
-<script>
-let carrinho = [];
-let total = 0;
-
-function add(item) {
-  carrinho.push(item);
-  total++;
-
-  document.getElementById("contador").innerText = total;
-  mostrarToast(item);
-}
-
-function finalizar() {
-  if (carrinho.length === 0) {
-    mostrarToast("Carrinho vazio 🖤");
-    return;
-  }
-
-  let texto = "Olá! Gostaria de:\n\n";
-
-  carrinho.forEach(i => texto += "• " + i + "\n");
-
-  window.open(
-    "https://wa.me/5561994240391?text=" + encodeURIComponent(texto),
-    "_blank"
-  );
-}
-
-function mostrarToast(texto) {
-  const toast = document.getElementById("toast");
-
-  toast.innerText = texto;
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 1500);
-}
 </script>
 
 </body>

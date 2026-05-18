@@ -1,5 +1,27 @@
-<link rel="stylesheet" href="style.css">
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Perfurações</title>
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<!-- MENU -->
+
 <nav>
+
   <h1>Belle Piercer</h1>
 
   <ul>
@@ -8,49 +30,145 @@
     <li><a href="joias.html">Joias</a></li>
     <li><a href="agendamento.html">Agendamento</a></li>
   </ul>
+
 </nav>
 
-<section id="perfuracoes">
-...
-<link rel="stylesheet" href="style.css">
+<!-- PERFURAÇÕES -->
 
 <section id="perfuracoes">
+
 <h2>Perfurações</h2>
+
 <div class="catalogo">
-  <div class="item"><img src="C:\Users\anacl\OneDrive\Desktop\isa studio\html\imagens\helix.HEIC"><h3>Helix</h3><div class="preco">R$ 60,00</div><button onclick="escolherPerfuracao('Helix', 60)">
-  Escolher Joia
-</button></div>
-  <div class="item"><img src="studio.jpg/images (1).jpg"><h3>Tragus</h3><button onclick="escolherPerfuracao('Helix', 60)">
-  Escolher Joia</div>
-  <div class="item"><img src="studio.jpg/septo.png"><h3>Septum</h3><div class="preco">R$ 90,00</div><button onclick="escolherPerfuracao('Helix', 60)">
-  Escolher Joia</div>
-  <div class="item"><img src="studio.jpg/nostril.png"><h3>Nostril</h3><div class="preco">R$ 60,00</div><button onclick="escolherPerfuracao('Helix', 60)">
-  Escolher Joia</div>
-  <div class="item"><img src="studio.jpg/daith.png"><h3>Daith</h3><div class="preco">R$ 80,00</div><button onclick="escolherPerfuracao('Helix', 60)">
-  Escolher Joia</div>
-  <div class="item"><img src="studio.jpg/industrial.png"><h3>Industrial</h3><div class="preco">R$ 120,00</div><button onclick="escolherPerfuracao('Helix', 60)">
-  Escolher Joia</div>
-  <div class="item"><img src="studio.jpg/umbigo.png"><h3>Umbigo</h3><div class="preco">R$ 100,00</div><button onclick="escolherPerfuracao('Helix', 60)">
-  Escolher Joia</div>
-  <div class="item"><img src="studio.jpg/labio.png"><h3>Lábio</h3><div class="preco">R$ 80,00</div><button onclick="escolherPerfuracao('Helix', 60)">
-  Escolher Joia</div>
+
+  <div class="item">
+
+    <img src="imagens/helix.png">
+
+    <h3>Helix</h3>
+
+    <button onclick="add('Helix')">
+      Escolher perfuração
+    </button>
+
+  </div>
+
+  <div class="item">
+
+    <img src="imagens/tragus.png">
+
+    <h3>Tragus</h3>
+
+    <button onclick="add('Tragus')">
+      Escolher perfuração
+    </button>
+
+  </div>
+
+  <div class="item">
+
+    <img src="imagens/septo.png">
+
+    <h3>Septum</h3>
+
+    <button onclick="add('Septum')">
+      Escolher perfuração
+    </button>
+
+  </div>
+
+  <div class="item">
+
+    <img src="imagens/nostril.png">
+
+    <h3>Nostril</h3>
+
+    <button onclick="add('Nostril')">
+      Escolher perfuração
+    </button>
+
+  </div>
+
 </div>
+
 </section>
+
+<!-- CARRINHO -->
+
+<div class="carrinho" onclick="finalizar()">
+  🛒 <span id="contador">0</span>
+</div>
+
+<div id="toast">Adicionado</div>
+
+<!-- SCRIPT -->
+
 <script>
 
-function escolherPerfuracao(nome, valor){
+let carrinho =
+JSON.parse(localStorage.getItem("carrinho")) || [];
 
-  const perfuracao = {
-    nome: nome,
-    valor: valor
-  };
+document.getElementById("contador").innerText =
+carrinho.length;
+
+function add(item){
+
+  carrinho.push(item);
 
   localStorage.setItem(
-    "perfuracao",
-    JSON.stringify(perfuracao)
+    "carrinho",
+    JSON.stringify(carrinho)
   );
 
-  window.location.href = "joias.html";
+  document.getElementById("contador").innerText =
+    carrinho.length;
+
+  mostrarToast(item + " adicionada 🖤");
+}
+
+function finalizar(){
+
+  if(carrinho.length === 0){
+
+    mostrarToast("Carrinho vazio 🖤");
+
+    return;
+  }
+
+  let texto =
+    "Olá! Gostaria de:\n\n";
+
+  carrinho.forEach((item) => {
+
+    texto += "• " + item + "\n";
+  });
+
+  window.open(
+
+    "https://wa.me/5561994240391?text=" +
+    encodeURIComponent(texto),
+
+    "_blank"
+  );
+}
+
+function mostrarToast(texto){
+
+  const toast =
+    document.getElementById("toast");
+
+  toast.innerText = texto;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+
+    toast.classList.remove("show");
+
+  }, 1500);
 }
 
 </script>
+
+</body>
+</html>
