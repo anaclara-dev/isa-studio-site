@@ -135,17 +135,17 @@ app.post(
       );
 
       res.json({
-
         mensagem:
         "Produto cadastrado"
-
       });
 
-    } catch (erro) {
+    } catch(erro){
 
       console.log(erro);
 
-      res.status(500).json(erro);
+      res
+        .status(500)
+        .json(erro);
     }
 
   }
