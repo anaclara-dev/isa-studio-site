@@ -8,7 +8,7 @@ document.getElementById("formulario");
 async function carregarJoias(){
 
   const resposta =
-    await fetch ("https://isa-studio-backend.onrender.com/catalogo");
+    await fetch ("https://isa-studio-backend.onrender.com/catálogo");
 
   const produtos =
     await resposta.json();
@@ -63,7 +63,7 @@ async function excluirJoia(id){
 
   await fetch(
 
-  `https://isa-studio-backend.onrender.com/catalogo/${id}`,
+  `https://isa-studio-backend.onrender.com/catálogo/${id}`,
 
   {
     method: "DELETE"
@@ -111,7 +111,7 @@ formulario.addEventListener(
 
     await fetch(
 
-      "https://isa-studio-backend.onrender.com/catalogo",
+      "https://isa-studio-backend.onrender.com/catálogo",
 
       {
         method: "POST",

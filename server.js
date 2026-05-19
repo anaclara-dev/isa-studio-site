@@ -112,7 +112,9 @@ app.post(
         req.body.categoria.toLowerCase();
 
       const imagem =
-        req.file.filename;
+        req.file
+        ? req.file.filename
+        : null;
 
       await db.query(
 
