@@ -77,15 +77,18 @@ app.get("/catalogo", async (req, res) => {
         "SELECT * FROM catalogo"
       );
 
+    console.log(resultado.rows);
+
     res.json(resultado.rows);
 
   } catch(erro){
 
+    console.log("ERRO NO GET:");
     console.log(erro);
 
-    res
-      .status(500)
-      .json(erro);
+    res.status(500).json({
+      erro: erro.message
+    });
 
   }
 
