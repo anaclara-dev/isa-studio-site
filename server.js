@@ -79,11 +79,14 @@ app.get("/catalogo", async (req, res) => {
 
     res.json(resultado.rows);
 
-  } catch (erro) {
+  } catch(erro){
 
     console.log(erro);
 
-    res.status(500).json(erro);
+    res
+      .status(500)
+      .json(erro);
+
   }
 
 });
