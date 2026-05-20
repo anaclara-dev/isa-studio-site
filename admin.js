@@ -63,7 +63,7 @@ async function excluirJoia(id){
 
   await fetch(
 
-  `https://isa-studio-backend.onrender.com/catálogo/${id}`,
+  `https://isa-studio-backend.onrender.com/catalogo/${id}`,
 
   {
     method: "DELETE"
@@ -111,7 +111,7 @@ formulario.addEventListener(
 
     await fetch(
 
-      "https://isa-studio-backend.onrender.com/catálogo",
+      "https://isa-studio-backend.onrender.com/catalogo",
 
       {
         method: "POST",
