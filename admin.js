@@ -8,7 +8,7 @@ document.getElementById("formulario");
 async function carregarJoias(){
 
   const resposta =
-    await fetch ("https://isa-studio-backend.onrender.com/catálogo");
+    await fetch ("https://isa-studio-backend.onrender.com/catalogo");
 
   const produtos =
     await resposta.json();
