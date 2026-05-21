@@ -2,18 +2,38 @@
 <html lang="pt-br">
 
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel Admin</title>
-
   <link rel="stylesheet" href="style.css">
 
+  <style>
+    /* Força o formulário e a lista a ficarem um embaixo do outro */
+    .centro {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Organiza a lista de joias para os cards ficarem um embaixo do outro */
+    #listaJoias {
+      display: flex;
+      flex-direction: column; /* Coloca um card embaixo do outro */
+      gap: 20px;              /* Dá um espaço de 20px entre cada card */
+      width: 100%;
+      max-width: 400px;       /* Evita que o card fique gigante no computador */
+      align-items: center;
+    }
+
+    /* Garante que cada card individual ocupe o espaço certinho */
+    #listaJoias > div {
+      width: 100%;
+    }
+  </style>
 </head>
 
 <body class="fundo-agendamento">
@@ -25,90 +45,40 @@
 <section class="centro">
 
   <div class="agendamento">
-
-    <p class="frase">
-      Painel de Joias
-    </p>
+    <p class="frase">Painel de Joias</p>
 
     <form id="formulario">
-
-      <input
-        type="text"
-        id="nome"
-        placeholder="Nome da joia"
-        required
-      >
-
-      <input
-        type="number"
-        id="preco"
-        placeholder="Preço"
-        required
-      >
+      <input type="text" id="nome" placeholder="Nome da joia" required>
+      <input type="number" id="preco" placeholder="Preço" required>
 
       <select id="categoria">
-
-        <option value="joia">
-          Joia
-        </option>
-
+        <option value="joia">Joia</option>
       </select>
 
-      <input
-        type="file"
-        id="imagem"
-        required
-      >
+      <input type="file" id="imagem" required>
+      <img id="preview" style="width:100%; border-radius:12px; display:none; margin-bottom:15px;">
 
-      <img
-        id="preview"
-        style="
-          width:100%;
-          border-radius:12px;
-          display:none;
-          margin-bottom:15px;
-        "
-      >
-
-      <button type="submit">
-        Salvar Joia
-      </button>
-
+      <button type="submit">Salvar Joia</button>
     </form>
- 
   </div>
-<div id="listaJoias"></div>
+
+  <div id="listaJoias"></div>
+
 </section>
 
 <script src="admin.js"></script>
 
 <script>
+const imagemInput = document.getElementById("imagem");
+const preview = document.getElementById("preview");
 
-const imagemInput =
-document.getElementById("imagem");
-
-const preview =
-document.getElementById("preview");
-
-imagemInput.addEventListener(
-
-  "change",
-
-  () => {
-
-    const arquivo =
-      imagemInput.files[0];
-
+imagemInput.addEventListener("change", () => {
+    const arquivo = imagemInput.files[0];
     if(arquivo){
-
-      preview.src =
-        URL.createObjectURL(arquivo);
-
+      preview.src = URL.createObjectURL(arquivo);
       preview.style.display = "block";
     }
-  }
-);
-
+});
 </script>
 
 </body>
