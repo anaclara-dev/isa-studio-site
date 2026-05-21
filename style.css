@@ -13,7 +13,11 @@
 }
 
 body{
-  background:#000;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('uploads/image black.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   color:var(--branco);
 }
 
@@ -153,6 +157,12 @@ h2{
   align-items:center;
   min-height:100vh;
 }
+.fundo-agendamento{ background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('uploads/fundo.png.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
 
 .agendamento{
   width:600px;
@@ -163,8 +173,9 @@ h2{
 }
 
 .frase{
+  margin-top: 100px;
   text-align:center;
-  font-size:2rem;
+  font-size:3rem;
   margin-bottom:25px;
   font-family:Georgia, serif;
 }
@@ -172,6 +183,7 @@ h2{
 .agendamento input,
 .agendamento textarea,
 .agendamento select{
+  margin-top: 12px;
   width:100%;
   padding:14px;
   margin-bottom:15px;
