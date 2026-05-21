@@ -2,152 +2,211 @@
 <html lang="pt-br">
 
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Joias</title>
-
   <link rel="stylesheet" href="style.css">
 
+  <style>
+    .modal-carrinho {
+      display: none; /* Começa escondido */
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .conteudo-carrinho {
+      background-color: #1a1a1a;
+      color: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 80vh;
+      overflow-y: auto;
+      border: 1px solid #333;
+    }
+    .topo-carrinho {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    .btn-fechar {
+      background: none;
+      border: none;
+      color: #c51212;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .item-no-carrinho {
+      background-color: #262626;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      white-space: pre-line; /* Mantém a quebra de linha do texto */
+    }
+    .btn-excluir {
+      background-color: #c51212;
+      color: rgb(255, 255, 255);
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn-whatsapp {
+      background-color: #25d366;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- MENU -->
-
 <nav>
-
   <h1>Belle Piercer</h1>
-
   <ul>
     <li><a href="index.html">Home</a></li>
     <li><a href="perfuracoes.html">Perfurações</a></li>
     <li><a href="joias.html">Joias</a></li>
     <li><a href="agendamento.html">Agendamento</a></li>
   </ul>
-
 </nav>
 
-<!-- JOIAS -->
-
 <section id="joias">
-
   <h2>Joias</h2>
-
-  <!-- PERFURAÇÃO ESCOLHIDA -->
-
   <div id="perfuracaoEscolhida"></div>
-
-  <!-- CATÁLOGO -->
-
   <div class="catalogo" id="catalogo"></div>
-
 </section>
 
-
-<div class="carrinho" onclick="finalizar()">
+<div class="carrinho" onclick="abrirCarrinho()">
   🛒 <span id="contador">0</span>
+</div>
+
+<div id="modalCarrinho" class="modal-carrinho">
+  <div class="conteudo-carrinho">
+    <div class="topo-carrinho">
+      <h3>Meu Carrinho</h3>
+      <button class="btn-fechar" onclick="fecharCarrinho()">✕</button>
+    </div>
+    <div id="listaItensCarrinho"></div>
+    <button class="btn-whatsapp" onclick="finalizar()">Enviar pedido para o WhatsApp</button>
+  </div>
 </div>
 
 <div id="toast">Adicionado</div>
 
 <script>
 
-/* =========================
-   PERFURAÇÃO ESCOLHIDA
-========================= */
-
-const perfuracao =
-JSON.parse(localStorage.getItem("perfuracao"));
-
-
-
-
+const perfuracao = JSON.parse(localStorage.getItem("perfuracao"));
 
 /* =========================
    CARRINHO
 ========================= */
-
-let carrinho =
-JSON.parse(localStorage.getItem("carrinho")) || [];
-
-document.getElementById("contador").innerText =
-carrinho.length;
+let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+document.getElementById("contador").innerText = carrinho.length;
 
 /* =========================
    ADICIONAR JOIA
 ========================= */
-
 function escolherJoia(nomeJoia, valorJoia){
-
-  // Criamos o texto do item. Se tiver perfuração mostra o nome, se não tiver, diz que é apenas a joia.
   let textoPerfuracao = "Apenas compra da joia (sem aplicação)";
   let valorPerfuracao = 0;
 
-  // Se o cliente escolheu uma perfuração antes, pegamos os dados dela
   if (typeof perfuracao !== 'undefined' && perfuracao) {
     textoPerfuracao = perfuracao.nome;
     valorPerfuracao = perfuracao.valor;
   }
 
-  // O total agora soma corretamente (valor da joia + valor da perfuração se houver)
   const total = valorPerfuracao + valorJoia;
 
-  const item = `
-Perfuração:
-${textoPerfuracao}
-
-Joia:
-${nomeJoia}
-
-Valor Total:
-R$ ${total},00
-`;
+  const item = `Perfuração: ${textoPerfuracao}\nJoia: ${nomeJoia}\nValor Total: R$ ${total},00`;
 
   carrinho.push(item);
-
-  localStorage.setItem(
-    "carrinho",
-    JSON.stringify(carrinho)
-  );
-
-  document.getElementById("contador").innerText =
-    carrinho.length;
+  localStorage.setItem("carrinho", JSON.stringify(carrinho));
+  document.getElementById("contador").innerText = carrinho.length;
 
   mostrarToast("Joia adicionada 🖤");
 }
 
 /* =========================
-   FINALIZAR
+   ABRIR E MONTAR O CARRINHO
 ========================= */
-
-function finalizar(){
-
+function abrirCarrinho() {
+  const modal = document.getElementById("modalCarrinho");
+  const lista = document.getElementById("listaItensCarrinho");
+  
   if(carrinho.length === 0){
-
     mostrarToast("Carrinho vazio 🖤");
-
     return;
   }
 
-  let texto =
-    "Olá! Gostaria de:\n\n";
+  lista.innerHTML = ""; // Limpa a lista antes de desenhar
 
+  // Desenha cada item com um botão de excluir ao lado
+  carrinho.forEach((item, index) => {
+    lista.innerHTML += `
+      <div class="item-no-carrinho">
+        <div>${item}</div>
+        <button class="btn-excluir" onclick="excluirItem(${index})">x</button>
+      </div>
+    `;
+  });
+
+  modal.style.display = "flex"; // Mostra a janelinha
+}
+
+function fecharCarrinho() {
+  document.getElementById("modalCarrinho").style.display = "none";
+}
+
+/* =========================
+   EXCLUIR ITEM DO CARRINHO
+========================= */
+function excluirItem(index) {
+  carrinho.splice(index, 1); // Remove da lista do JavaScript
+  localStorage.setItem("carrinho", JSON.stringify(carrinho)); // Salva no navegador
+  document.getElementById("contador").innerText = carrinho.length; // Atualiza contador
+  
+  if (carrinho.length === 0) {
+    fecharCarrinho(); // Se esvaziou tudo, fecha a janela automaticamente
+  } else {
+    abrirCarrinho(); // Se ainda tem itens, redesenha a lista atualizada
+  }
+}
+
+/* =========================
+   FINALIZAR (WHATSAPP)
+========================= */
+function finalizar(){
+  if(carrinho.length === 0){
+    mostrarToast("Carrinho vazio 🖤");
+    return;
+  }
+
+  let texto = "Olá! Gostaria de:\n\n";
   carrinho.forEach((item) => {
-
-    texto += item + "\n";
+    texto += item + "\n\n-------------------\n\n";
   });
 
   window.open(
-
-    "https://wa.me/5561994240391?text=" +
-    encodeURIComponent(texto),
-
+    "https://wa.me/5561994240391?text=" + encodeURIComponent(texto),
     "_blank"
   );
 }
@@ -155,75 +214,39 @@ function finalizar(){
 /* =========================
    TOAST
 ========================= */
-
 function mostrarToast(texto){
-
-  const toast =
-    document.getElementById("toast");
-
+  const toast = document.getElementById("toast");
   toast.innerText = texto;
-
   toast.classList.add("show");
-
   setTimeout(() => {
-
     toast.classList.remove("show");
-
   }, 1500);
 }
 
 /* =========================
    CARREGAR JOIAS
 ========================= */
-
 async function carregarJoias(){
-
-  const resposta =
-    await fetch("https://isa-studio-backend.onrender.com/catalogo");
-
-  const produtos =
-    await resposta.json();
-
-  const catalogo =
-    document.getElementById("catalogo");
-
+  const resposta = await fetch("https://isa-studio-backend.onrender.com/catalogo");
+  const produtos = await resposta.json();
+  const catalogo = document.getElementById("catalogo");
   catalogo.innerHTML = "";
 
   produtos.forEach((produto) => {
-
     if(produto.categoria === "joia"){
-
       catalogo.innerHTML += `
-
       <div class="item">
-
-        <img
-src="https://isa-studio-backend.onrender.com/uploads/${produto.imagem}"
->
-
+        <img src="https://isa-studio-backend.onrender.com/uploads/${produto.imagem}">
         <h3>${produto.nome}</h3>
-
-        <div class="preco">
-          R$ ${produto.preco}
-        </div>
-
-        <button onclick="escolherJoia('${produto.nome}', ${produto.preco})">
-
-          Adicionar ao carrinho
-
-        </button>
-
+        <div class="preco">R$ ${produto.preco}</div>
+        <button onclick="escolherJoia('${produto.nome}', ${produto.preco})">Adicionar ao carrinho</button>
       </div>
-
       `;
     }
-
   });
-
 }
 
 carregarJoias();
-
 </script>
 
 </body>
