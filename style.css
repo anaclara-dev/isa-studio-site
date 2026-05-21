@@ -99,6 +99,7 @@ h2{
 /* CATÁLOGO */
 
 .catalogo{
+  margin-top: auto;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:25px;

@@ -49,7 +49,6 @@
 
 </section>
 
-<!-- CARRINHO -->
 
 <div class="carrinho" onclick="finalizar()">
   🛒 <span id="contador">0</span>
@@ -86,30 +85,28 @@ carrinho.length;
 
 function escolherJoia(nomeJoia, valorJoia){
 
-  if(!perfuracao){
+  // Criamos o texto do item. Se tiver perfuração mostra o nome, se não tiver, diz que é apenas a joia.
+  let textoPerfuracao = "Apenas compra da joia (sem aplicação)";
+  let valorPerfuracao = 0;
 
-    alert("Escolha uma perfuração primeiro");
-
-    window.location.href =
-      "perfuracoes.html";
-
-    return;
+  // Se o cliente escolheu uma perfuração antes, pegamos os dados dela
+  if (typeof perfuracao !== 'undefined' && perfuracao) {
+    textoPerfuracao = perfuracao.nome;
+    valorPerfuracao = perfuracao.valor;
   }
 
-  const total =
-    perfuracao.valor + valorJoia;
+  // O total agora soma corretamente (valor da joia + valor da perfuração se houver)
+  const total = valorPerfuracao + valorJoia;
 
   const item = `
-
 Perfuração:
-${perfuracao.nome}
+${textoPerfuracao}
 
 Joia:
 ${nomeJoia}
 
 Valor Total:
 R$ ${total},00
-
 `;
 
   carrinho.push(item);
