@@ -13,16 +13,13 @@
 }
 
 body{
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('uploads/image black.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
+  background-color: #000000; /* Fundo 100% preto no restante da página */
   color:var(--branco);
 }
 
-/* MENU */
-
+/* ==========================================
+   MENU FIXO
+   ========================================== */
 nav{
   position:fixed;
   top:0;
@@ -56,23 +53,94 @@ nav a:hover{
   opacity:0.7;
 }
 
-/* HEADER */
-
-header{
-  width:100%;
-  height:100vh;
-  background-image:
-  linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)),
-  url("imagens/capa.png");
-
-  background-size:cover;
-  background-position:center;
+/* ==========================================
+   BANNER DE CAPA (INDEX.HTML)
+   ========================================== */
+.capa{
+  width: 100%;
+  height: 500px; /* Altura ideal de banner moderno */
+  
+  /* Caminho correto apontando para sua pasta uploads */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url("uploads/capa.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Centralização do conteúdo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 8% 40px 8%;
 }
 
-/* SEÇÕES */
+.capa-conteudo {
+  max-width: 600px;
+}
 
+.capa-conteudo h2 {
+  font-size: 2.8rem;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color: #fff;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+  border-left: none; 
+  padding-left: 0;
+}
+
+.capa-conteudo p {
+  font-size: 1.2rem;
+  color: var(--cinza);
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.capa-botoes {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+/* BOTOES DO BANNER */
+.btn-capa {
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn-primario {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #fff;
+}
+
+.btn-primario:hover {
+  background-color: transparent;
+  color: #fff;
+}
+
+.btn-secundario {
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.btn-secundario:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+/* ==========================================
+   SEÇÕES GERAIS DO SITE
+   ========================================== */
 section{
-  padding:90px 8%;
+  padding: 90px 8% 40px 8%;
 }
 
 h2{
@@ -83,21 +151,14 @@ h2{
   font-family:Georgia, serif;
 }
 
-/* SOBRE */
-
-.sobre p{
+/* SOBRE E TITANIO */
+.sobre p, .Titanio p{
   max-width:900px;
   line-height:2;
   font-size:1.1rem;
 }
 
-.Titanio p{
-    max-width:900px;
-  line-height:2;
-  font-size:1.1rem;
-}
 /* CATÁLOGO */
-
 .catalogo{
   margin-top: auto;
   display:grid;
@@ -151,18 +212,18 @@ h2{
 }
 
 /* AGENDAMENTO */
-
 .centro{
   display:flex;
   justify-content:center;
   align-items:center;
   min-height:100vh;
 }
-.fundo-agendamento{ background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('uploads/fundo.png.jpg');
+
+.fundo-agendamento{ 
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('uploads/fundo.png.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
 }
 
 .agendamento{
@@ -205,8 +266,7 @@ h2{
   font-size:1rem;
 }
 
-/* WHATS */
-
+/* BOTOES FLUTUANTES */
 .whats{
   position:fixed;
   right:20px;
@@ -216,9 +276,8 @@ h2{
   border-radius:50%;
   text-decoration:none;
   font-size:1.2rem;
+  z-index: 998;
 }
-
-/* CARRINHO */
 
 .carrinho{
   position:fixed;
@@ -229,6 +288,7 @@ h2{
   padding:12px 18px;
   border-radius:40px;
   cursor:pointer;
+  z-index: 998;
 }
 
 .carrinho span{
@@ -237,8 +297,6 @@ h2{
   padding:4px 8px;
   border-radius:50%;
 }
-
-/* TOAST */
 
 #toast{
   position:fixed;
@@ -250,16 +308,39 @@ h2{
   border-radius:10px;
   opacity:0;
   transition:0.4s;
+  z-index: 998;
 }
 
 #toast.show{
   opacity:1;
 }
 
-/* RESPONSIVO */
+/* PERFURAÇÕES */
+.titulo-perfuracao {
+  position: relative;
+  width: 250px;
+  float: right;
+  height: 20px;
+  font-size: 20px;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
 
+.texto-perfuracao {
+  position: relative;
+  width: 250px;
+  background-color: #2b2b2b;
+  color: white;
+  padding: 5px;
+  border-radius: 10px;
+  border-left: 4px solid #000000;
+  font-size: 18px;
+}
+
+/* ==========================================
+   RESPONSIVIDADE (TELAS MENORES / CELULAR)
+   ========================================== */
 @media(max-width:768px){
-
   nav{
     flex-direction:column;
     gap:10px;
@@ -271,8 +352,29 @@ h2{
     justify-content:center;
   }
 
-  header{
-    height:60vh;
+  .capa{
+    height: auto;
+    padding: 130px 5% 40px 5%; /* Garante que o menu não cubra o texto no celular */
+  }
+
+  .capa-conteudo h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  .capa-conteudo p {
+    font-size: 1rem;
+  }
+
+  .capa-botoes {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .btn-capa {
+    width: 100%;
+    padding: 10px 20px;
   }
 
   h2{
@@ -290,37 +392,4 @@ h2{
   .item img{
     height:180px;
   }
-
-}
-.capa{
-  width:100%;
-  height:100vh;
-
-  background-image:
-  linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-  url("imagem/image (1).jpeg");
-
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-}
-.titulo-perfuracao {
-  position: relative;
-  width: 250px;
-  float: right;
-   height: 20px;
-  font-size: 20px;
-  color: #ffffff;
-  margin-bottom: 10px;
-}
-
-.texto-perfuracao {
-  position: relative;
-  width: 250px;
-  background-color: #2b2b2b;
-  color: white;
-  padding: 5px;
-  border-radius: 10px;
-  border-left: 4px solid #000000;
-  font-size: 18px;
 }
