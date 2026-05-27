@@ -21,12 +21,9 @@ const db = new Pool({
    SUPABASE STORAGE (UPLOAD DE IMAGENS)
 ========================= */
 // IMPORTANTE: Substitua 'ayverxhlvhwoqpvrntqz' caso seu ID de projeto seja diferente do que está na URL acima
-const SUPABASE_URL = "https://ayverxhlvhwoqpvrntqz.supabase.co/rest/v1/"; 
-// Pegue essa chave "anon public" no painel do seu Supabase (Settings -> API)
+const SUPABASE_URL = "https://ayverxhlvhwoqpvrntqz.supabase.co"; // CORRIGIDO: Sem o /rest/v1/
 const SUPABASE_KEY = "sb_publishable_q4C5iSgEGgHl4pJMafJMMg_tTO_cBKq"; 
 const supabaseStorage = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-/* =========================
    CONFIG
 ========================= */
 app.use(cors());
