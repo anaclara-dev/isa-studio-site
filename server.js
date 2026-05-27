@@ -23,7 +23,7 @@ const db = new Pool({
 // IMPORTANTE: Substitua 'ayverxhlvhwoqpvrntqz' caso seu ID de projeto seja diferente do que está na URL acima
 const SUPABASE_URL = "https://ayverxhlvhwoqpvrntqz.supabase.co/rest/v1/"; 
 // Pegue essa chave "anon public" no painel do seu Supabase (Settings -> API)
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5dmVyeGhsdmh3b3FwdnJudHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMzMxNjgsImV4cCI6MjA5NDcwOTE2OH0.kb0g1JlAFVHFo-m2woCgb4OQfmUTJdAmH1jnImJokiM"; 
+const SUPABASE_KEY = "sb_publishable_q4C5iSgEGgHl4pJMafJMMg_tTO_cBKq"; 
 const supabaseStorage = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* =========================
