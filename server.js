@@ -1,273 +1,164 @@
 const express = require("express");
-
 const cors = require("cors");
-
 const multer = require("multer");
-
 const path = require("path");
-
 const { Pool } = require("pg");
+const { createClient } = require("@supabase/supabase-js"); // ADICIONADO: Cliente do Supabase Storage
 
 const app = express();
 
 /* =========================
-   SUPABASE
+   SUPABASE BANCO DE DADOS (PostgreSQL)
 ========================= */
-
 const db = new Pool({
-
-  connectionString:
-  "postgresql://postgres.ayverxhlvhwoqpvrntqz:StudioIsa1901!@aws-1-us-east-1.pooler.supabase.com:6543/postgres",
-
+  connectionString: "postgresql://postgres.ayverxhlvhwoqpvrntqz:StudioIsa1901!@aws-1-us-east-1.pooler.supabase.com:6543/postgres",
   ssl: {
     rejectUnauthorized: false
   }
-
 });
+
+/* =========================
+   SUPABASE STORAGE (UPLOAD DE IMAGENS)
+========================= */
+// IMPORTANTE: Substitua 'ayverxhlvhwoqpvrntqz' caso seu ID de projeto seja diferente do que está na URL acima
+const SUPABASE_URL = "https://ayverxhlvhwoqpvrntqz.supabase.co"; 
+// Pegue essa chave "anon public" no painel do seu Supabase (Settings -> API)
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5dmVyeGhsdmh3b3FwdnJudHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMzMxNjgsImV4cCI6MjA5NDcwOTE2OH0.kb0g1JlAFVHFo-m2woCgb4OQfmUTJdAmH1jnImJokiM"; 
+const supabaseStorage = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* =========================
    CONFIG
 ========================= */
-
 app.use(cors());
-
 app.use(express.json());
 
-app.use(
-  "/uploads",
-  express.static("uploads")
-);
+// Mantemos essa linha para não quebrar a imagem de fundo do banner local se usar
+app.use("/uploads", express.static("uploads"));
 
 /* =========================
-   MULTER
+   MULTER (Alterado para memória ram para enviar direto pro Supabase)
 ========================= */
-
-const storage = multer.diskStorage({
-
-  destination: (req, file, cb) => {
-
-    cb(null, "uploads/");
-  },
-
-  filename: (req, file, cb) => {
-
-    cb(
-      null,
-      Date.now() +
-      path.extname(file.originalname)
-    );
-  }
-
-});
-
-const upload = multer({
-  storage
-});
+const storage = multer.memoryStorage(); 
+const upload = multer({ storage });
 
 /* =========================
-   LISTAR
+   LISTAR (Permanece idêntico)
 ========================= */
-
 app.get("/catalogo", async (req, res) => {
-
   try {
-
-    const resultado =
-      await db.query(
-        "SELECT * FROM catalogo"
-      );
-
+    const resultado = await db.query("SELECT * FROM catalogo");
     console.log(resultado.rows);
-
     res.json(resultado.rows);
-
   } catch(erro){
-
     console.log("ERRO NO GET:");
     console.log(erro);
-
-    res.status(500).json({
-      erro: erro.message
-    });
-
+    res.status(500).json({ erro: erro.message });
   }
-
 });
 
 /* =========================
-   CADASTRAR
+   CADASTRAR (Alterado para fazer upload no Supabase Storage)
 ========================= */
+app.post("/catalogo", upload.single("imagem"), async (req, res) => {
+  try {
+    const nome = req.body.nome;
+    const preco = req.body.preco;
+    const categoria = req.body.categoria.toLowerCase();
+    const file = req.file;
 
-app.post(
+    let urlFinalDaImagem = null;
 
-  "/catalogo",
+    // Se o usuário enviou uma foto no cadastro...
+    if (file) {
+      // 1. Gera um nome único juntando a data com a extensão original (.png, .jpg)
+      const nomeArquivo = `${Date.now()}${path.extname(file.originalname)}`;
 
-  upload.single("imagem"),
+      // 2. Envia o arquivo direto para o bucket 'joias' do Supabase Storage
+      const { data, error: uploadError } = await supabaseStorage.storage
+        .from("joias") // O nome do bucket público criado no Passo 1
+        .upload(nomeArquivo, file.buffer, {
+          contentType: file.mimetype,
+          upsert: false
+        });
 
-  async (req, res) => {
+      if (uploadError) {
+        throw uploadError;
+      }
 
-    try {
+      // 3. Pega o link público definitivo gerado pelo Supabase
+      const { data: publicUrlData } = supabaseStorage.storage
+        .from("joias")
+        .getPublicUrl(nomeArquivo);
 
-      const nome =
-        req.body.nome;
-
-      const preco =
-        req.body.preco;
-
-      const categoria =
-        req.body.categoria.toLowerCase();
-
-      const imagem =
-        req.file
-        ? req.file.filename
-        : null;
-
-      await db.query(
-
-        `
-        INSERT INTO catalogo
-        (nome, preco, imagem, categoria)
-
-        VALUES ($1, $2, $3, $4)
-        `,
-
-        [
-          nome,
-          preco,
-          imagem,
-          categoria
-        ]
-
-      );
-
-      res.json({
-        mensagem:
-        "Produto cadastrado"
-      });
-
-    } catch(erro){
-
-      console.log(erro);
-
-      res
-        .status(500)
-        .json(erro);
+      urlFinalDaImagem = publicUrlData.publicUrl;
     }
 
-  }
+    // 4. Salva no banco de dados. Agora salvamos o LINK INTEIRO da imagem
+    await db.query(
+      `
+      INSERT INTO catalogo (nome, preco, imagem, categoria)
+      VALUES ($1, $2, $3, $4)
+      `,
+      [nome, preco, urlFinalDaImagem, categoria]
+    );
 
-);
+    res.json({
+      mensagem: "Produto cadastrado"
+    });
+
+  } catch(erro){
+    console.log(erro);
+    res.status(500).json({ erro: erro.message || erro });
+  }
+});
 
 /* =========================
-   EDITAR
+   EDITAR (Permanece idêntico)
 ========================= */
+app.put("/catalogo/:id", async (req, res) => {
+  try {
+    const { nome, preco } = req.body;
 
-app.put(
+    await db.query(
+      `
+      UPDATE catalogo
+      SET nome=$1, preco=$2
+      WHERE id=$3
+      `,
+      [nome, preco, req.params.id]
+    );
 
-  "/catalogo/:id",
-
-  async (req, res) => {
-
-    try {
-
-      const {
-        nome,
-        preco
-      } = req.body;
-
-      await db.query(
-
-        `
-        UPDATE catalogo
-
-        SET nome=$1,
-        preco=$2
-
-        WHERE id=$3
-        `,
-
-        [
-          nome,
-          preco,
-          req.params.id
-        ]
-
-      );
-
-      res.json({
-
-        mensagem:
-        "Atualizado"
-
-      });
-
-    } catch (erro) {
-
-      console.log(erro);
-
-      res.status(500).json(erro);
-    }
-
+    res.json({ mensagem: "Atualizado" });
+  } catch (erro) {
+    console.log(erro);
+    res.status(500).json(erro);
   }
-
-);
+});
 
 /* =========================
-   DELETAR
+   DELETAR (Permanece idêntico)
 ========================= */
+app.delete("/catalogo/:id", async (req, res) => {
+  try {
+    await db.query(
+      `
+      DELETE FROM catalogo
+      WHERE id=$1
+      `,
+      [req.params.id]
+    );
 
-app.delete(
-
-  "/catalogo/:id",
-
-  async (req, res) => {
-
-    try {
-
-      await db.query(
-
-        `
-        DELETE FROM catalogo
-
-        WHERE id=$1
-        `,
-
-        [req.params.id]
-
-      );
-
-      res.json({
-
-        mensagem:
-        "Deletado"
-
-      });
-
-    } catch (erro) {
-
-      console.log(erro);
-
-      res.status(500).json(erro);
-    }
-
+    res.json({ mensagem: "Deletado" });
+  } catch (erro) {
+    console.log(erro);
+    res.status(500).json(erro);
   }
-
-);
+});
 
 /* =========================
    SERVER
 ========================= */
-
-const PORT =
-process.env.PORT || 3000;
-
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-
-  console.log(
-
-    "Servidor rodando na porta " +
-    PORT
-
-  );
-
+  console.log("Servidor rodando na porta " + PORT);
 });
