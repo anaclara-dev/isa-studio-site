@@ -24,8 +24,8 @@ const db = new Pool({
 const SUPABASE_URL = "https://ayverxhlvhwoqpvrntqz.supabase.co"; // CORRIGIDO: Sem o /rest/v1/
 const SUPABASE_KEY = "sb_publishable_q4C5iSgEGgHl4pJMafJMMg_tTO_cBKq"; 
 const supabaseStorage = createClient(SUPABASE_URL, SUPABASE_KEY);
-   CONFIG
-========================= */
+
+
 app.use(cors());
 app.use(express.json());
 
