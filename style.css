@@ -338,168 +338,16 @@ h2{
 }
 
 /* ==========================================
-   RESPONSIVIDADE (TELAS MENORES / CELULAR)
-   ========================================== */
-@media(max-width:768px){
-  nav{
-    flex-direction:column;
-    gap:10px;
-  }
+ @media (max-width: 768px){
 
-  nav ul{
-    gap:15px;
-    flex-wrap:wrap;
-    justify-content:center;
-  }
-
-  .capa{
-    height: auto;
-    padding: 130px 5% 40px 5%; /* Garante que o menu não cubra o texto no celular */
-  }
-
-  .capa-conteudo h2 {
+  .frase{
     font-size: 1.8rem;
-    margin-bottom: 15px;
-  }
-
-  .capa-conteudo p {
-    font-size: 1rem;
-  }
-
-  .capa-botoes {
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-  }
-
-  .btn-capa {
-    width: 100%;
-    padding: 10px 20px;
-  }
-
-  h2{
-    font-size:1.5rem;
-  }
-
-  .sobre p{
-    font-size:1rem;
-  }
-
-  .frase{
-    font-size:1.5rem;
-  }
-
-  .item img{
-    height:180px;
-  }
-}
-@media (max-width: 768px){
-
-  nav{
-    padding: 12px 5%;
-  }
-
-  nav h1{
-    font-size: 1.2rem;
-  }
-
-  nav ul{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:10px;
-  }
-
-  nav a{
-    font-size:0.9rem;
-  }
-
-  .capa{
-    padding:120px 5% 40px;
-    height:auto;
-  }
-
-  .capa-conteudo h2{
-    font-size:1.8rem;
-  }
-
-  .capa-conteudo p{
-    font-size:1rem;
-  }
-
-  .capa-botoes{
-    flex-direction:column;
-  }
-
-  .btn-capa{
-    width:100%;
-  }
-
-  .frase{
-    font-size:2rem;
-    margin-top:120px;
-    padding:0 15px;
+    margin-top: 100px;
+    padding: 0 10px;
   }
 
   .agendamento{
-    width:95%;
-    padding:20px;
-    margin:auto;
-  }
-
-  .item img{
-    height:180px;
-  }
-
-  .titulo-perfuracao,
-  .texto-perfuracao{
-    width:100%;
-    float:none;
-  }
-}
-
-@media (max-width: 480px){
-
-  nav h1{
-    font-size:1rem;
-  }
-
-  nav ul{
-    gap:8px;
-  }
-
-  nav a{
-    font-size:0.8rem;
-  }
-
-  .frase{
-    font-size:1.5rem;
-  }
-
-  .capa-conteudo h2{
-    font-size:1.4rem;
-  }
-
-  .agendamento{
-    padding:15px;
-  }
-
-  .agendamento input,
-  .agendamento textarea,
-  .agendamento button{
-    font-size:16px;
-  }
-}
-
-/* Celulares menores */
-@media (max-width: 480px) {
-
-  .frase{
-    font-size: 1.5rem;
-  }
-
-  .agendamento{
-    width: 95%;
+    width: 92%;
     padding: 15px;
   }
 
@@ -507,5 +355,17 @@ h2{
   .agendamento textarea,
   .agendamento button{
     padding: 12px;
+  }
+
+  nav{
+    padding: 10px;
+  }
+
+  nav ul{
+    gap: 8px;
+  }
+
+  nav a{
+    font-size: 0.8rem;
   }
 }
